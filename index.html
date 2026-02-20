@@ -8,75 +8,63 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
 
 <style>
-*{box-sizing:border-box}
+*{box-sizing:border-box;margin:0;padding:0}
 
 :root{
-  --bg1:#0f172a;
-  --bg2:#1e293b;
-  --bg3:#0b3b5f;
+  --bg:#0f172a;
   --accent:#2563eb;
   --wa:#25D366;
 }
 
 body{
-  margin:0;
   font-family:'Inter',sans-serif;
   min-height:100vh;
   display:grid;
   place-items:center;
+  background:var(--bg);
   overflow:hidden;
-  background:linear-gradient(120deg,var(--bg1),var(--bg2),var(--bg3));
-  background-size:300% 300%;
-  animation:gradientMove 14s ease infinite;
   position:relative;
 }
 
-/* Burbujas suaves */
-.bubbles{
+/* ===== CONSTELACIÓN ===== */
+canvas{
   position:absolute;
   inset:0;
-  pointer-events:none;
-  opacity:.35;
-}
-.bubble{
-  position:absolute;
-  bottom:-120px;
-  border-radius:999px;
-  background:rgba(255,255,255,.4);
-  animation:floatUp linear infinite;
+  z-index:0;
 }
 
+/* ===== CARD ===== */
 .card{
   position:relative;
+  z-index:1;
   width:min(520px,92vw);
-  padding:48px 40px;
+  padding:clamp(28px,6vw,48px);
   border-radius:22px;
-  background:rgba(255,255,255,.95);
-  backdrop-filter:blur(12px);
+  background:rgba(255,255,255,.96);
+  backdrop-filter:blur(14px);
   box-shadow:0 30px 70px rgba(0,0,0,.35);
   text-align:center;
 
   opacity:0;
-  transform:translateY(20px);
+  transform:translateY(25px);
   animation:cardIn .8s cubic-bezier(.2,.9,.2,1) forwards;
 }
 
 h1{
-  margin:0;
-  font-size:34px;
+  font-size:clamp(26px,7vw,34px);
   font-weight:800;
   color:#0f172a;
 }
 
 .role{
   margin-top:8px;
-  font-size:18px;
+  font-size:clamp(16px,4.5vw,18px);
   font-weight:600;
   color:#475569;
 }
 
 .divider{
-  width:70px;
+  width:80px;
   height:4px;
   background:var(--accent);
   margin:24px auto;
@@ -89,17 +77,17 @@ h1{
   justify-content:center;
   gap:10px;
   width:100%;
-  max-width:320px;
-  margin-top:12px;
-  padding:13px 18px;
-  border-radius:12px;
+  max-width:360px;
+  margin-top:14px;
+  padding:14px 18px;
+  border-radius:14px;
   text-decoration:none;
   font-weight:700;
-  transition:.2s ease;
-  font-size:15px;
+  font-size:clamp(14px,4vw,16px);
+  transition:.25s ease;
 }
 
-.btn:hover{transform:translateY(-2px)}
+.btn:hover{transform:translateY(-3px)}
 
 .email{
   background:var(--accent);
@@ -107,7 +95,6 @@ h1{
   box-shadow:0 18px 35px rgba(37,99,235,.3);
 }
 
-/* BLANCO NUCLEAR */
 .phone{
   background:#ffffff;
   color:#0f172a;
@@ -137,44 +124,23 @@ footer{
   color:#94a3b8;
 }
 
-@keyframes gradientMove{
-  0%{background-position:0% 50%}
-  50%{background-position:100% 50%}
-  100%{background-position:0% 50%}
-}
-
 @keyframes cardIn{
   to{opacity:1;transform:translateY(0)}
 }
 
-@keyframes floatUp{
-  from{transform:translateY(0);opacity:0}
-  15%{opacity:.45}
-  to{transform:translateY(-110vh);opacity:0}
-}
-
-@media (prefers-reduced-motion: reduce){
-  body{animation:none}
-  .bubble{display:none}
-  .card{animation:none;opacity:1;transform:none}
+/* Más impacto en móvil */
+@media (max-width:480px){
+  .card{
+    width:95vw;
+    padding:32px 24px;
+  }
 }
 </style>
 </head>
 
 <body>
 
-<div class="bubbles">
-  <div class="bubble" style="left:8%;width:10px;height:10px;animation-duration:10s"></div>
-  <div class="bubble" style="left:18%;width:14px;height:14px;animation-duration:13s"></div>
-  <div class="bubble" style="left:28%;width:9px;height:9px;animation-duration:11s"></div>
-  <div class="bubble" style="left:38%;width:18px;height:18px;animation-duration:15s"></div>
-  <div class="bubble" style="left:48%;width:12px;height:12px;animation-duration:12s"></div>
-  <div class="bubble" style="left:58%;width:16px;height:16px;animation-duration:14s"></div>
-  <div class="bubble" style="left:66%;width:11px;height:11px;animation-duration:12s"></div>
-  <div class="bubble" style="left:74%;width:20px;height:20px;animation-duration:16s"></div>
-  <div class="bubble" style="left:82%;width:13px;height:13px;animation-duration:13s"></div>
-  <div class="bubble" style="left:90%;width:9px;height:9px;animation-duration:11s"></div>
-</div>
+<canvas id="network"></canvas>
 
 <main class="card">
   <h1>Sensi Sierra García</h1>
@@ -182,27 +148,90 @@ footer{
 
   <div class="divider"></div>
 
+  <!-- EMAIL -->
   <a class="btn email" href="mailto:sensisierra@asiegar.com">
+    <svg viewBox="0 0 24 24">
+      <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/>
+    </svg>
     sensisierra@asiegar.com
   </a>
 
+  <!-- TELÉFONO (solo número + icono) -->
   <a class="btn phone" href="tel:+34650924323">
-    Teléfono: 650 924 323
+    <svg viewBox="0 0 24 24">
+      <path d="M6.6 10.8a15.1 15.1 0 006.6 6.6l2.2-2.2a1 1 0 011-.24 11.7 11.7 0 003.7.6 1 1 0 011 1v3.6a1 1 0 01-1 1A17 17 0 013 6a1 1 0 011-1h3.6a1 1 0 011 1 11.7 11.7 0 00.6 3.7 1 1 0 01-.24 1l-2.36 2.1z"/>
+    </svg>
+    650 924 323
   </a>
 
+  <!-- WHATSAPP -->
   <a class="btn whatsapp"
      href="https://wa.me/34650924323?text=Hola%20Sensi,%20te%20escribo%20porque%20he%20visto%20tu%20web"
      target="_blank" rel="noopener">
-
-     <svg viewBox="0 0 24 24">
-       <path d="M20.52 3.48A11.8 11.8 0 0012.02 0C5.38 0 .02 5.36.02 12c0 2.12.55 4.18 1.6 6L0 24l6.2-1.6a11.94 11.94 0 005.82 1.48h.01c6.63 0 12-5.36 12-12 0-3.2-1.25-6.2-3.51-8.4z"/>
-     </svg>
-
      WhatsApp
   </a>
 
   <footer>© 2026 Asiegar</footer>
 </main>
+
+<script>
+const canvas = document.getElementById("network");
+const ctx = canvas.getContext("2d");
+
+let particles = [];
+const num = 70;
+
+function resize(){
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+resize();
+window.addEventListener("resize", resize);
+
+for(let i=0;i<num;i++){
+  particles.push({
+    x: Math.random()*canvas.width,
+    y: Math.random()*canvas.height,
+    vx: (Math.random()-0.5)*0.6,
+    vy: (Math.random()-0.5)*0.6
+  });
+}
+
+function draw(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+
+  for(let i=0;i<num;i++){
+    let p = particles[i];
+    p.x += p.vx;
+    p.y += p.vy;
+
+    if(p.x<0||p.x>canvas.width) p.vx*=-1;
+    if(p.y<0||p.y>canvas.height) p.vy*=-1;
+
+    ctx.beginPath();
+    ctx.arc(p.x,p.y,2,0,Math.PI*2);
+    ctx.fillStyle="white";
+    ctx.fill();
+
+    for(let j=i+1;j<num;j++){
+      let p2=particles[j];
+      let dist=Math.hypot(p.x-p2.x,p.y-p2.y);
+      if(dist<120){
+        ctx.strokeStyle="rgba(255,255,255,"+(1-dist/120)*0.15+")";
+        ctx.lineWidth=1;
+        ctx.beginPath();
+        ctx.moveTo(p.x,p.y);
+        ctx.lineTo(p2.x,p2.y);
+        ctx.stroke();
+      }
+    }
+  }
+
+  requestAnimationFrame(draw);
+}
+
+draw();
+</script>
 
 </body>
 </html>
